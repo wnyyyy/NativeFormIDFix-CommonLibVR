@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
-set(NAME "CommonLibVR-TemplatePlugin")
-set(VERSION 0.1.0)
+set(NAME "NativeEditorIDFix-VR")
+set(VERSION 1.0.0)
 
 # ---- Options ----
 

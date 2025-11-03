@@ -1,7 +1,7 @@
 {
-  "name": "commonlibvr-templateplugin",
+  "name": "nativeeditoridfix-vr",
   "version-string": "0.0.1",
-  "description": "A simple template plugin to use as a starting point for making CommonLibVR based SKSE plugins",
+  "description": "NativeEditorIDFixNG compiled against CommonLibVR and cleaned up for better Enderal compatibility. (Credit to KitsuuneNivis for the original Native EditorID Fix mod & naitro2010 for the NG port this is based on.)",
   "homepage": "N/A",
   "license": "MIT",
   "dependencies": [
