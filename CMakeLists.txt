@@ -123,6 +123,8 @@ else ()
 endif()
 
 find_path(CLIB_UTIL_INCLUDE_DIRS "ClibUtil/detail/SimpleIni.h")
+find_path(DETOURS_INCLUDE_DIRS "detours/detours.h")
+find_library(DETOURS_LIBRARY detours REQUIRED)
 
 # ---- Add source files ----
 
@@ -155,7 +157,7 @@ add_library(
 	${CMAKE_CURRENT_BINARY_DIR}/version.rc
 	.clang-format
 	.editorconfig
-)
+ "src/GameEventHandler.h" "src/GameEventHandler.cpp")
 
 target_compile_features(
 	${PROJECT_NAME}
@@ -169,12 +171,14 @@ target_include_directories(
 		${CMAKE_CURRENT_BINARY_DIR}/include
 		${CMAKE_CURRENT_SOURCE_DIR}/src
 		${CLIB_UTIL_INCLUDE_DIRS}
+		${DETOURS_INCLUDE_DIRS}
 )
 
 target_link_libraries(
 	${PROJECT_NAME}
 	PRIVATE
 		${CommonLibName}::${CommonLibName}
+		${DETOURS_LIBRARY}
 )
 
 target_precompile_headers(

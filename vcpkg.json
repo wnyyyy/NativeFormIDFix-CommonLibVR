@@ -9,6 +9,8 @@
     "boost-stl-interfaces",
     "rsm-binary-io",
     "clib-util",
-    "spdlog"
-  ]
+    "spdlog",
+    "detours"
+  ],
+  "builtin-baseline": "e3ed41868d5034bc608eaaa58383cd6ecdbb5ffb"
 }

@@ -9,11 +9,8 @@
 #include <ClibUtil/singleton.hpp>
 
 #pragma warning(push)
-#ifdef NDEBUG
-#	include <spdlog/sinks/basic_file_sink.h>
-#else
-#	include <spdlog/sinks/msvc_sink.h>
-#endif
+#include <spdlog/sinks/basic_file_sink.h>
+#include <spdlog/sinks/msvc_sink.h>
 #pragma warning(pop)
 
 namespace logger = SKSE::log;
@@ -26,3 +23,4 @@ using namespace clib_util::singleton;
 #define DLLEXPORT __declspec(dllexport)
 
 #include "Version.h"
+#include <detours/detours.h>

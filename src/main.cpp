@@ -1,29 +1,24 @@
+#include "GameEventHandler.h"
+#include <detours/detours.h>
+
 extern "C" DLLEXPORT bool SKSEAPI SKSEPlugin_Query(const SKSE::QueryInterface* a_skse, SKSE::PluginInfo* a_info)
 {
-#ifndef NDEBUG
-	auto sink = std::make_shared<spdlog::sinks::msvc_sink_mt>();
-#else
 	auto path = logger::log_directory();
 	if (!path) {
 		return false;
 	}
 
-	*path /= Version::PROJECT;
-	*path += ".log"sv;
-	auto sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(path->string(), true);
-#endif
-
-	auto log = std::make_shared<spdlog::logger>("global log"s, std::move(sink));
-
-#ifndef NDEBUG
-	log->set_level(spdlog::level::trace);
-#else
+	std::shared_ptr<spdlog::logger> log;
+	if (IsDebuggerPresent()) {
+		log = std::make_shared<spdlog::logger>("Global", std::make_shared<spdlog::sinks::msvc_sink_mt>());
+	} else {
+		log = std::make_shared<spdlog::logger>("Global", std::make_shared<spdlog::sinks::basic_file_sink_mt>(path->string(), true));
+	}
 	log->set_level(spdlog::level::info);
 	log->flush_on(spdlog::level::info);
-#endif
 
 	spdlog::set_default_logger(std::move(log));
-	spdlog::set_pattern("%g(%#): [%^%l%$] %v"s);
+	spdlog::set_pattern("[%b %d %H:%M:%S.%e] [%l] [%t] %v");
 
 	logger::info(FMT_STRING("{} v{}"), Version::PROJECT, Version::NAME);
 
@@ -53,9 +48,12 @@ extern "C" DLLEXPORT bool SKSEAPI SKSEPlugin_Query(const SKSE::QueryInterface* a
 
 extern "C" DLLEXPORT bool SKSEAPI SKSEPlugin_Load(const SKSE::LoadInterface* a_skse)
 {
-	logger::info("loaded");
+	logger::info("'{} {}' is loading, game version '{}'...", Version::NAME, Version::PROJECT, REL::Module::get().version().string());
 
 	SKSE::Init(a_skse);
+	GameEventHandler::getInstance().onLoad();
+
+	logger::info("{} has finished loading.", Version::NAME);
 
 	return true;
 }
